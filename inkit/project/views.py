@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 
 from django.http import HttpResponse
 from .models import project as projectmodel
@@ -19,6 +19,34 @@ def proj(request, pk):
 def createProject(request):
     form = projectForm()
 
+    if request.method == 'POST':
+        form = projectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('project')
     context = {'form':form 
     }
     return render(request ,"project/project_form.html",context)
+
+
+def updateProject(request,pk):
+    project = projectmodel.objects.get(id=pk)
+    form = projectForm(instance=project)
+
+    if request.method == 'POST':
+        form = projectForm(request.POST ,instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('project')
+    context = {'form':form 
+    }
+    return render(request ,"project/project_form.html",context)
+
+
+def deleteProject(request,pk):
+    project = projectmodel.objects.get(id=pk)
+    if request.method == 'POST':
+        project.delete()
+        return redirect('project')
+    context = {'object':project}
+    return render(request,"project/delete_template.html",context)
