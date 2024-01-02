@@ -1,15 +1,29 @@
 {% extends "main.html" %}
+
 {% block content %}
 
-<p>Hello you are on {{page}} page</p>
+<h1>projects</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>project</th>
+        <th>positive votes</th>
+        <th>Vote</th>
+        <th>date</th>
+        <th></th>
+        
+    </tr>
+    {% for project in project %}
+        <tr>
+            <td>{{project.id}}</td>
+            <td>{{project.title}}</td>
+            <td>{{project.vote_ratio}}%</td>
+            <td>{{project.vote_total}}</td>
+            <td>{{project.created}}</td>
+            <td><a href = '{% url "proj" project.id %}' >view</a></td>
+        </tr>
 
-{% if number > 10 %}
-    <p> Number is good</p>
-{% else %}
-    <p>Number is bad</p>
- 
-{% endif %}
-
-<h1>project template</h1>
+    {% endfor %}
+</table>
 
 {% endblock content %}
