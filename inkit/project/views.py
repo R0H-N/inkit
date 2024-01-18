@@ -13,8 +13,9 @@ def project(request):
 
 def proj(request, pk):
     projectObj = projectmodel.objects.get(id = pk )
+    context = { 'project':projectObj}
 
-    return render(request,'project/proj.html',{'project':projectObj})
+    return render(request,'project/proj.html',context)
 
 def createProject(request):
     form = projectForm()
