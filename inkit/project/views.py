@@ -6,14 +6,17 @@ from django.http import HttpResponse
 from .models import project as projectmodel
 from .models import Tag
 from .forms import projectForm
-from .utils import searchProjects
+from .utils import searchProjects,paginateProjects
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 
 def project(request):
     search_query = ''
     project,searchProject = searchProjects(request)
+    
+    custom_range,project = paginateProjects(request,project,3)
 
-    context={ 'project': project , 'search_query':search_query}
+    context={ 'project': project , 'search_query':search_query , 'custom_range':custom_range}
     
     return render(request,'project/project.html', context )
 
