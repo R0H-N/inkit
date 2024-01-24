@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from .models import project as projectmodel
 from .models import Tag
-from .forms import projectForm
+from .forms import projectForm,ReviewForm
 from .utils import searchProjects,paginateProjects
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
@@ -22,7 +22,8 @@ def project(request):
 
 def proj(request, pk):
     projectObj = projectmodel.objects.get(id = pk )
-    context = { 'project':projectObj}
+    form = ReviewForm()
+    context = { 'project':projectObj,'form':form}
 
     return render(request,'project/proj.html',context)
 
