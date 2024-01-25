@@ -1,6 +1,7 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q  
+from django.contrib import messages
 
 from django.http import HttpResponse
 from .models import project as projectmodel
@@ -23,6 +24,19 @@ def project(request):
 def proj(request, pk):
     projectObj = projectmodel.objects.get(id = pk )
     form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        review = form.save(commit=False)
+        review.project = projectObj
+        review.owner = request.user.profile
+        review.save()
+        projectObj.getVoteCount
+
+        messages.success(request,'Your review sumitted successfully')
+        return redirect('proj',pk = projectObj.id)
+
+
+
     context = { 'project':projectObj,'form':form}
 
     return render(request,'project/proj.html',context)
